@@ -38,10 +38,18 @@ def two_dim(col_name,col_value,dataframe,year=None):
     else:
         return dataframe.loc[(dataframe['Year']==year)&(dataframe[col_name]==col_value)]
 
-new_data=pd.read_csv("C:\\Users\\ajay\\Downloads\\Jonathan.csv")
-data=new_data.iloc[:,1:]
+def few_data(dataframe,year):
+    dataframe=dataframe.loc[dataframe['Year']==year]
+    return dataframe
+
+def clean(dataframe,yr):
+    return few_data(date_clean(sfr(dataframe)),yr)
+
+yr=st.selectbox("Get data according to year",options=[2017,2018,2019,2020,2021])
+new_data=pd.read_csv("https://4809897.app.netsuite.com/core/media/media.nl?id=7472655&c=4809897&h=Pve73pI_qvxpMNEfP9MAmhvo5-PlX4301Yy5Jr1Bw7t6BmKq&_xt=.csv")
+data=clean(new_data,yr)
 data=data.loc[data['Amount']>0]
-data=sfr(date_clean(data))
+
 filter=st.sidebar.selectbox("Column Filters",data.columns)
 features=data.columns
 n,c,g,r=st.columns([3,3,3,3])
